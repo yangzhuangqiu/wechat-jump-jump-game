@@ -33,7 +33,17 @@
     java -jar wechat-jump-game-1.0.jar
     ```
 
-- __步骤五：下载本应用并执行__
+- __步骤五：配置ADB地址__
+
+    ![](https://github.com/coolcooldee/wechat-jump-game/blob/master/doc/adb-setting.png)
+
+- __步骤五：点击鼠标开始游戏__
+
+    1.点击黑色小人底部
+
+    2.点击目标块的中心位置
+
+    3.即可看到黑色小人跳动
 
 贡献
 ===
