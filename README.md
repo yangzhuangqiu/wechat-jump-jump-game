@@ -33,7 +33,7 @@
     java -jar wechat-jump-game-1.0.jar
     ```
 
-- __步骤五：配置ADB地址__
+- __步骤五：按照引导配置ADB地址__
 
     ![](https://github.com/coolcooldee/wechat-jump-game/blob/master/doc/adb-setting.png)
 
@@ -44,6 +44,11 @@
     2.点击目标块的中心位置
 
     3.即可看到黑色小人跳动
+
+    4.重复以上操作
+
+- __效果图__
+
 
 贡献
 ===
