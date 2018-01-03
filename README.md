@@ -48,7 +48,7 @@
     4.重复以上操作
 
 - __效果图__
-
+    ![image](https://github.com/coolcooldee/wechat-jump-game/blob/master/doc/demo.gif)
 
 贡献
 ===
