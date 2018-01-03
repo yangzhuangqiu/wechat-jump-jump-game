@@ -11,7 +11,7 @@
 ======
 - __步骤一：安装JDK__
 
-    安装JDK7或者以上版本，自行百度，或点击[这里](https://www.cnblogs.com/takeyblogs/p/7457913.html)参考
+    安装JDK7或者以上版本，具体可参考[这里](https://www.cnblogs.com/takeyblogs/p/7457913.html)参考
 - __步骤二：下载 Android Debug Bridge__
 
     推荐下载地址，可参考：
@@ -22,10 +22,18 @@
 
     [SDK Platform-Tools for Linux](https://dl.google.com/android/repository/platform-tools-latest-linux.zip)
 
-- __步骤三：下载本应用并执行__
+- __步骤三：准备 Android 手机__
 
-    Download Zip
+    Android 手机开启 USB 调试模式并且连接电脑，具体可参考[这里](https://jingyan.baidu.com/article/0eb457e50b99d003f0a9055f.html)
 
+- __步骤四：下载本应用并执行__
+
+    下载本应用的 Zip 包并解压，进入目录执行命令
+    ```bash
+    java -jar wechat-jump-game-1.0.jar
+    ```
+
+- __步骤五：下载本应用并执行__
 
 贡献
 ===
