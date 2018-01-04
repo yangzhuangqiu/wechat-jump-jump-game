@@ -8,7 +8,6 @@ package com.github.coolcooldee.wechatgame;
  * @Date 2018/1/3
  */
 
-import com.github.coolcooldee.wechatgame.service.JumpService;
 import com.github.coolcooldee.wechatgame.service.PanelUIService;
 import com.github.coolcooldee.wechatgame.tools.android.AdbToolHelper;
 
@@ -18,7 +17,7 @@ import com.github.coolcooldee.wechatgame.tools.android.AdbToolHelper;
 public class Application {
     public static void main(String[] args) {
         AdbToolHelper.init();
-        new PanelUIService().showUI();
+        new PanelUIService().initGUI();
         //JumpService.init();
     }
 

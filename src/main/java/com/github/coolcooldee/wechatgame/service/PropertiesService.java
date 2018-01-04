@@ -27,10 +27,10 @@ public abstract class PropertiesService {
         pro.setProperty(PRO_ADB_PATH, path);
         FileOutputStream oFile = null;
         try {
-            oFile = new FileOutputStream(PRO_FILE_NAME, true);
+            oFile = new FileOutputStream(PRO_FILE_NAME);
             pro.store(oFile, "app setting");
             oFile.close();
-            Log.println(" 保存ADB地址配置信息到 "+PRO_FILE_NAME);
+            Log.println("保存ADB地址配置信息到 "+PRO_FILE_NAME);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -42,7 +42,7 @@ public abstract class PropertiesService {
         Properties pro = new Properties();
         File file = new File(PRO_FILE_NAME);
         if(file.exists()){
-            Log.println(" 读取配置文件 "+PRO_FILE_NAME);
+            Log.println("读取配置文件 "+PRO_FILE_NAME);
             try {
                 FileInputStream in = new FileInputStream(PRO_FILE_NAME);
                 pro.load(in);

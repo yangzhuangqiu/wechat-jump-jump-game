@@ -50,6 +50,11 @@ public abstract class JumpService {
         return (int)Math.sqrt(_x*_x+_y*_y);
     }
 
+    public static String genAndGetScreencapPath() {
+        AdbToolHelper.screencap();
+        return SCREENCAP_PATH;
+    }
+
     public static String getScreencapPath() {
         return SCREENCAP_PATH;
     }
