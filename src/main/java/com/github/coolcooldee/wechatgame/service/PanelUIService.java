@@ -24,8 +24,6 @@ import java.io.IOException;
 
 public class PanelUIService extends JFrame {
 
-    double uirate = 0.5;
-
     public PanelUIService(){
     }
 
@@ -49,6 +47,7 @@ public class PanelUIService extends JFrame {
 
     class MyJPanel extends JScrollPane {
         public MyJPanel(){
+            this.setRequestFocusEnabled(true);
             this.addMouseListener(getMyMouseListener());
         }
 
@@ -64,6 +63,7 @@ public class PanelUIService extends JFrame {
                 }
                 if(image!=null){
                     try {
+                        Double uirate = 0.5;
                         int width = image.getWidth(null);
                         int height = image.getHeight(null);
                         if(JumpService.getDistance2timeRatio()==null) {
@@ -77,6 +77,7 @@ public class PanelUIService extends JFrame {
                             Double distance2timeRatio = JumpService.getDistance2timeRatioByResolution(resulotionStr.toString());
                             if (distance2timeRatio != null) {
                                 JumpService.setDistance2timeRatio(distance2timeRatio);
+                                uirate = JumpService.getUIRatioByResolution(resulotionStr.toString());
                             }
                         }
                         g.drawImage(image, 0, 0, (int)(width*uirate), (int)(height*uirate), null);

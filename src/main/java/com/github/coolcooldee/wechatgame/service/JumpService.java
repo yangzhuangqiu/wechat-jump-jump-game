@@ -23,9 +23,20 @@ public abstract class JumpService {
     static {
         resolutionMapDistance2timeRatio.put("1600*2560",0.92*2);
         resolutionMapDistance2timeRatio.put("1440*2560",1.039*2);
-        resolutionMapDistance2timeRatio.put("1080*1920",1.3903*2);
+        resolutionMapDistance2timeRatio.put("1080*2220",1.3903*2);
+        resolutionMapDistance2timeRatio.put("1080*1920",1.3903*2);//debug
         resolutionMapDistance2timeRatio.put("720*1280",2.078*2);
     }
+
+    private static final Map<String, Double> resolutionMapUIRate = new HashMap<String, Double>();
+    static {
+        resolutionMapUIRate.put("1600*2560",0.05);
+        resolutionMapUIRate.put("1440*2560",0.1);
+        resolutionMapUIRate.put("1080*2220",0.25);//debug
+        resolutionMapUIRate.put("1080*1920",0.5);
+        resolutionMapUIRate.put("720*1280",0.5);
+    }
+
     static Point beginPoint = null;
     static Point endPoint = null;
 
@@ -38,7 +49,7 @@ public abstract class JumpService {
     public static boolean jump(Point beginPoint, Point endPoint){
         int d = getDistance(beginPoint, endPoint);
         Log.println("跳跃距离 "+d);
-        if(d<100){
+        if(d<50){
             Log.println("距离太小，重新跳跃 "+d);
             return false;
         }
@@ -51,17 +62,11 @@ public abstract class JumpService {
         return true;
     }
 
-
     private static int getDistance(Point a, Point b) {
         double _x = Math.abs(a.x - b.x);
         double _y = Math.abs(a.y - b.y);
         return (int)Math.sqrt(_x*_x+_y*_y);
     }
-
-//    public static String genAndGetScreencapPath() {
-//        AdbToolHelper.screencap();
-//        return SCREENCAP_PATH;
-//    }
 
     public static String getScreencapPath() {
         return SCREENCAP_PATH;
@@ -88,6 +93,10 @@ public abstract class JumpService {
 
     public static Double getDistance2timeRatioByResolution(String resolution){
         return resolutionMapDistance2timeRatio.get(resolution);
+    }
+
+    public static Double getUIRatioByResolution(String resolution){
+        return resolutionMapUIRate.get(resolution);
     }
 
     public static Point getEndPoint() {
