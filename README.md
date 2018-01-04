@@ -33,6 +33,7 @@
 - __步骤三：准备 Android 手机__
 
     Android 手机开启 USB 调试模式，具体可参考[这里](https://jingyan.baidu.com/article/0eb457e50b99d003f0a9055f.html)
+    ![](https://github.com/coolcooldee/wechat-jump-game/blob/master/doc/androiddebug.png)
     Android 手机连接电脑并且开启小游戏，处于可操作界面
 
 - __步骤四：下载本应用并执行__
