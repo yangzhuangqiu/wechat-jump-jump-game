@@ -1,34 +1,43 @@
 # wechat-jump-game 1.0
-极简 200行代码 微信《跳一跳》辅助工具 鼠标控制跳跃 增加随机跳跃因子 可防止封号
+极简 200行代码 微信《跳一跳》辅助工具 电脑端鼠标控制跳跃 增加随机跳跃因子 刷分 可防止封号
 
 特性
 ===
-- __代码精简，流程简单，三步即可开始__　
-- __简单鼠标操作，选中起跳点和目标点，即可__　
+- __代码精简，流程简单，三步即开始游戏刷分__　
+- __鼠标操作简单，使用手动模式，选中起跳点和目标点，即可 (注意：全自动模式很容易被微信识别并封杀)__　
 - __增加随机因子，防止微信识别为"外挂"__
+
+运行环境
+====
+- __Android + Windows 7+__　
+- __Android + Mac OS__
+- __Android + Linux__
+
 
 快速开始
 ======
 - __步骤一：安装JDK__
 
     安装JDK7或者以上版本，具体可参考[这里](https://www.cnblogs.com/takeyblogs/p/7457913.html)参考
+
 - __步骤二：下载 Android Debug Bridge__
 
     推荐下载地址，可参考：
 
-    [SDK Platform-Tools for Windows](https://dl.google.com/android/repository/platform-tools-latest-windows.zip)
+    [ADB for Windows](https://dl.google.com/android/repository/platform-tools-latest-windows.zip)
 
-    [SDK Platform-Tools for Mac](https://dl.google.com/android/repository/platform-tools-latest-darwin.zip)
+    [ADB for Mac](https://dl.google.com/android/repository/platform-tools-latest-darwin.zip)
 
-    [SDK Platform-Tools for Linux](https://dl.google.com/android/repository/platform-tools-latest-linux.zip)
+    [ADB for Linux](https://dl.google.com/android/repository/platform-tools-latest-linux.zip)
 
 - __步骤三：准备 Android 手机__
 
-    Android 手机开启 USB 调试模式并且连接电脑，具体可参考[这里](https://jingyan.baidu.com/article/0eb457e50b99d003f0a9055f.html)
+    Android 手机开启 USB 调试模式，具体可参考[这里](https://jingyan.baidu.com/article/0eb457e50b99d003f0a9055f.html)
+    Android 手机连接电脑
 
 - __步骤四：下载本应用并执行__
 
-    下载本应用的 Zip 包并解压，进入目录执行命令
+    点击[这里](https://github.com/coolcooldee/wechat-jump-game/archive/master.zip)下载本应用的 Zip 包并解压，进入目录执行命令
     ```bash
     java -jar wechat-jump-game-1.0.jar
     ```
