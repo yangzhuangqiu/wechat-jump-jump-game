@@ -27,7 +27,7 @@ public class PanelUIService extends JFrame {
     }
 
     public void showUI(){
-        Log.println("正在绘制UI.");
+        Log.println(" UI 启动成功.");
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         this.setBounds(0,0,600,800);
         this.setVisible(true);
@@ -39,6 +39,7 @@ public class PanelUIService extends JFrame {
         AdbToolHelper.screencap();
         this.getComponent(0).validate();
         this.getComponent(0).repaint();
+        Log.println("重新绘制 UI 成功.");
     }
 
 

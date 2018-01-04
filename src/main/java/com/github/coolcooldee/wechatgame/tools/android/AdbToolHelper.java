@@ -9,12 +9,12 @@ package com.github.coolcooldee.wechatgame.tools.android;
  */
 
 import com.github.coolcooldee.wechatgame.service.JumpService;
+import com.github.coolcooldee.wechatgame.service.PropertiesService;
 import com.github.coolcooldee.wechatgame.tools.log.Log;
 
 import javax.swing.*;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
+import java.util.Properties;
 import java.util.Random;
 
 /**
@@ -62,7 +62,7 @@ public abstract class AdbToolHelper {
         args[2] = SCRIPT_SCREEN_CAP.replace("${adbpath}", adbPath).replace("${imagename}", JumpService.getScreencapPath());
         try {
             Runtime.getRuntime().exec(args).waitFor();
-            Log.println("截屏成功");
+            //Log.println("截屏成功");
         } catch (IOException e) {
             e.printStackTrace();
         } catch (InterruptedException e) {
@@ -94,9 +94,9 @@ public abstract class AdbToolHelper {
         }
     }
 
-    public static boolean device() {
+    public static boolean checkAdb(String path){
         String[] args = genBaseSysParams();
-        args[2] =SCRIPT_DEVICES.replace("${adbpath}", adbPath);
+        args[2] =SCRIPT_DEVICES.replace("${adbpath}", path);
         try {
             Process process = Runtime.getRuntime().exec(args);
             BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(process.getErrorStream()));
@@ -123,17 +123,36 @@ public abstract class AdbToolHelper {
     }
 
     public static boolean setting(){
-        //判断配置文件是否存在
-
-
-        Object adbpath = JOptionPane.showInputDialog(null,"请输入ADB工具地址：\n","系统参数设置",JOptionPane.PLAIN_MESSAGE,null,null,"例如：/Users/dee/Downloads/platform-tools/adb");
-        Log.println("ADB工具地址：" + adbpath);
-        if(adbpath!=null && !"".equals(adbpath)) {
-            AdbToolHelper.setAdbPath(adbpath.toString());
-            return AdbToolHelper.device();
+        String tempADBPath = PropertiesService.getSettingADBPath();
+        if(tempADBPath!=null && !"".equals(tempADBPath)){
+            if(AdbToolHelper.checkAdb(tempADBPath)) {
+                return true;
+            }else{
+                Log.println("配置文件异常，未找到ADB工具，请重新配置ADB工具地址" );
+                JOptionPane.showMessageDialog(null, "配置文件异常，未找到ADB工具，请重新配置ADB工具地址！", "提示",JOptionPane.ERROR_MESSAGE);
+            }
         }
-        return false;
+        Object adbpathObject = JOptionPane.showInputDialog(null,"请输入ADB工具地址：\n","系统参数设置",JOptionPane.PLAIN_MESSAGE,null,null,"例如：/Users/dee/Downloads/platform-tools/adb");
+        if(adbpathObject!=null){
+            tempADBPath = adbpathObject.toString();
+            if(!AdbToolHelper.checkAdb(tempADBPath)){
+                Log.println("未找到ADB工具，请重新配置ADB工具地址" );
+                JOptionPane.showMessageDialog(null, "未找到ADB工具，请确认已经下载ADB工具并重新设置！", "提示",JOptionPane.ERROR_MESSAGE);
+                setting();
+                return true;
+            }
+        }else{
+            System.exit(0);
+        }
+
+        PropertiesService.setSettingADBPath(tempADBPath);
+        setAdbPath(tempADBPath);
+
+        Log.println("ADB工具地址设置成功：" + adbPath);
+        return AdbToolHelper.checkAdb(adbPath);
     }
+
+
 
     public static void setAdbPath(String adbPath) {
         AdbToolHelper.adbPath = adbPath;
