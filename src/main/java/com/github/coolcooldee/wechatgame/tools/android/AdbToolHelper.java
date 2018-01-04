@@ -32,7 +32,7 @@ public abstract class AdbToolHelper {
     final static String SCRIPT_DEVICES = "${adbpath} devices";
 
     public static boolean init(){
-        boolean isok = AdbToolHelper.setting();
+        boolean isok = setting();
         if(!isok){
             Log.println("应用启动失败.");
             return false;
@@ -123,6 +123,9 @@ public abstract class AdbToolHelper {
     }
 
     public static boolean setting(){
+        //判断配置文件是否存在
+
+
         Object adbpath = JOptionPane.showInputDialog(null,"请输入ADB工具地址：\n","系统参数设置",JOptionPane.PLAIN_MESSAGE,null,null,"例如：/Users/dee/Downloads/platform-tools/adb");
         Log.println("ADB工具地址：" + adbpath);
         if(adbpath!=null && !"".equals(adbpath)) {

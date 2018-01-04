@@ -29,7 +29,7 @@ public class PanelUIService extends JFrame {
     public void showUI(){
         Log.println("正在绘制UI.");
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        this.setBounds(0,0,600,600);
+        this.setBounds(0,0,600,800);
         this.setVisible(true);
         this.add(new MyJPanel());
         refreshUI();

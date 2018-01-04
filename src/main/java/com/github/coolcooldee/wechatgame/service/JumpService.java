@@ -16,7 +16,7 @@ import java.awt.*;
 public abstract class JumpService {
 
     static final double DISTANCE_2_TIME_RATIO = 2.65;
-    static final String SCREENCAP_PATH = "screenshots/jumpgame.png";
+    static final String SCREENCAP_PATH = "jumpgame.png";
 
     static Point beginPoint = null;
     static Point endPoint = null;
