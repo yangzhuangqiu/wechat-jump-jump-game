@@ -17,14 +17,14 @@ import java.util.Map;
 
 public abstract class JumpService {
 
-    private static double distance2timeRatio = 0;
+    private static Double distance2timeRatio = null;
     private static final String SCREENCAP_PATH = "jumpgame.png";
     private static final Map<String, Double> resolutionMapDistance2timeRatio = new HashMap<String, Double>();
     static {
-        resolutionMapDistance2timeRatio.put("1600*2560",0.92);
-        resolutionMapDistance2timeRatio.put("1440*2560",1.039);
-        resolutionMapDistance2timeRatio.put("1080*1920",1.392);
-        resolutionMapDistance2timeRatio.put("720*1280",2.078);
+        resolutionMapDistance2timeRatio.put("1600*2560",0.92*2);
+        resolutionMapDistance2timeRatio.put("1440*2560",1.039*2);
+        resolutionMapDistance2timeRatio.put("1080*1920",1.3903*2);
+        resolutionMapDistance2timeRatio.put("720*1280",2.078*2);
     }
     static Point beginPoint = null;
     static Point endPoint = null;
@@ -58,10 +58,10 @@ public abstract class JumpService {
         return (int)Math.sqrt(_x*_x+_y*_y);
     }
 
-    public static String genAndGetScreencapPath() {
-        AdbToolHelper.screencap();
-        return SCREENCAP_PATH;
-    }
+//    public static String genAndGetScreencapPath() {
+//        AdbToolHelper.screencap();
+//        return SCREENCAP_PATH;
+//    }
 
     public static String getScreencapPath() {
         return SCREENCAP_PATH;
@@ -78,7 +78,7 @@ public abstract class JumpService {
         }
     }
 
-    public static double getDistance2timeRatio() {
+    public static Double getDistance2timeRatio() {
         return distance2timeRatio;
     }
 

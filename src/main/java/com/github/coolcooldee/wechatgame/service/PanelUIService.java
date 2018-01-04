@@ -24,15 +24,18 @@ import java.io.IOException;
 
 public class PanelUIService extends JFrame {
 
+    double uirate = 0.5;
+
     public PanelUIService(){
     }
 
     public void initGUI(){
-        Log.println("UI 启动成功.");
+        Log.println("UI 启动中，请稍等");
+        AdbToolHelper.screencap();
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        this.setBounds(0,0,600,1280);
+        Log.println("UI 启动成功.");
         this.setVisible(true);
-        this.setResizable(true);
+        this.setBounds(0,0,600,1280);
         this.add(new MyJPanel());
         refreshUI();
     }
@@ -50,12 +53,7 @@ public class PanelUIService extends JFrame {
         }
 
         public void paint(Graphics g){
-            String filePath = JumpService.genAndGetScreencapPath();
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+            String filePath = JumpService.getScreencapPath();
             File file = new File(filePath);
             if(file.exists()) {
                 Image image = null;
@@ -64,25 +62,28 @@ public class PanelUIService extends JFrame {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-                try {
-                    int width = image.getWidth(null);
-                    int height = image.getHeight(null);
-                    StringBuffer resulotionStr = new StringBuffer();
-                    if(height>width){
-                        resulotionStr.append(width).append("*").append(height);
-                    }else{
-                        resulotionStr.append(height).append("*").append(width);
-                    }
-                    Log.println("屏幕分辨率："+resulotionStr);
-                    Double distance2timeRatio = JumpService.getDistance2timeRatioByResolution(resulotionStr.toString());
-                    if(distance2timeRatio!=null){
-                        JumpService.setDistance2timeRatio(distance2timeRatio);
-                    }
+                if(image!=null){
+                    try {
+                        int width = image.getWidth(null);
+                        int height = image.getHeight(null);
+                        if(JumpService.getDistance2timeRatio()==null) {
+                            StringBuffer resulotionStr = new StringBuffer();
+                            if (height > width) {
+                                resulotionStr.append(width).append("*").append(height);
+                            } else {
+                                resulotionStr.append(height).append("*").append(width);
+                            }
+                            Log.println("屏幕分辨率：" + resulotionStr);
+                            Double distance2timeRatio = JumpService.getDistance2timeRatioByResolution(resulotionStr.toString());
+                            if (distance2timeRatio != null) {
+                                JumpService.setDistance2timeRatio(distance2timeRatio);
+                            }
+                        }
+                        g.drawImage(image, 0, 0, (int)(width*uirate), (int)(height*uirate), null);
+                    } catch (Exception e) {
+                        e.printStackTrace();
 
-                    g.drawImage(image, 0, 0, width, height, null);
-                } catch (Exception e) {
-                    e.printStackTrace();
-
+                    }
                 }
             }else{
                 Log.println("未找到截图");
@@ -135,64 +136,6 @@ public class PanelUIService extends JFrame {
                 }
 
             };
-        }
-    }
-
-
-    class MousePanel extends JPanel
-    {
-        int x_pos,y_pos;
-        public int getPointX()
-        {
-            return x_pos;
-        }
-        public int getPointY()
-        {
-            return y_pos;
-        }
-        public MousePanel()
-        {
-            addMouseListener(new MouseListener()
-            {
-                //mouseClicked():鼠标单击
-                public void mouseClicked(MouseEvent e)
-                {
-                    x_pos=e.getX();
-                    y_pos=e.getY();
-                    repaint();
-                }
-                //mouseEntered():鼠标进入时
-                public void mouseEntered(MouseEvent e)
-                {
-                }
-                //mouseExited():鼠标离开时
-                public void mouseExited(MouseEvent e)
-                {
-                }
-                //mousePressed():鼠标按下去
-                public void mousePressed(MouseEvent e)
-                {
-
-                }
-                //mouseReleased():鼠标松开时
-                public void mouseReleased(MouseEvent e) {}
-            });
-            addMouseMotionListener(new MouseMotionListener()
-            {
-                public void mouseMoved(MouseEvent e)
-                {
-                }
-                public void mouseDragged(MouseEvent e){}
-            });
-        }
-        public void paintComponent(Graphics g)
-        {
-            super.paintComponent(g);
-            //g.drawString("current location is:["+x_pos+","+y_pos+"]",x_pos,y_pos);//在界面上显示
-            System.out.printf("current location is:["+x_pos+","+y_pos+"]\n",x_pos,y_pos);//在控制台显示
-            g.setColor(Color.RED);
-            g.drawRect(x_pos-25, y_pos-25, 50, 50);
-            //g.fillOval(x_pos,y_pos,8,8);
         }
     }
 
