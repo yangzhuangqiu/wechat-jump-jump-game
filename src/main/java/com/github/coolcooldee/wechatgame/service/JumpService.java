@@ -33,7 +33,7 @@ public abstract class JumpService {
     static {
         resolutionMapUIRate.put("1600*2560",0.05);
         resolutionMapUIRate.put("1440*2560",0.1);
-        resolutionMapUIRate.put("1080*2220",0.25);//debug
+        resolutionMapUIRate.put("1080*2220",0.25);
         resolutionMapUIRate.put("1080*1920",0.5);
         resolutionMapUIRate.put("720*1280",0.5);
     }
