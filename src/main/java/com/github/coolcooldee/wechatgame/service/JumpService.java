@@ -7,35 +7,20 @@ import java.awt.*;
  * 跳跃的核心逻辑
  *
  * @Description
- * @Author Dee1024 <coolcooldee@gmail.com>
+ * @author Dee1024 <coolcooldee@gmail.com>
  * @Version 1.0
  * @Since 1.0
  * @Date 2018/1/3
  */
 
-public class JumpService {
+public abstract class JumpService {
 
     static final double DISTANCE_2_TIME_RATIO = 2.65;
-    static final String SCREENCAP_PATH = "jumpgame.png";
-
+    static final String SCREENCAP_PATH = "screenshots/jumpgame.png";
 
     static Point beginPoint = null;
     static Point endPoint = null;
-    static PanelUIService panel;
 
-    /**
-     * 初始化UI
-     */
-    public static void init(){
-        boolean isok = AdbToolHelper.setting();
-        if(!isok){
-            Log.println("应用启动失败.");
-            return;
-        }
-        Log.println("应用启动成功.");
-        panel = new PanelUIService();
-        refreshUI();
-    }
 
     /**
      * 进行跳跃，同时等待一会，等到其停止，方便下一步截屏
@@ -56,15 +41,6 @@ public class JumpService {
             e1.printStackTrace();
         }
         return true;
-    }
-
-    /**
-     * 每次跳完，重新截图， 刷新界面
-     */
-    public static void refreshUI(){
-        AdbToolHelper.screencap();
-        panel.getComponent(0).validate();
-        panel.getComponent(0).repaint();
     }
 
 

@@ -8,12 +8,14 @@ package com.github.coolcooldee.wechatgame.tools.android;
  * @Date 2018/1/3
  */
 
+import com.github.coolcooldee.wechatgame.service.JumpService;
 import com.github.coolcooldee.wechatgame.tools.log.Log;
 
 import javax.swing.*;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.Random;
 
 /**
  * 封装ADB功能，通过执行ADB命令行实现
@@ -22,12 +24,22 @@ import java.io.InputStreamReader;
  */
 public abstract class AdbToolHelper {
 
-    //请使用本地的ABD工具路径替换
+    //请使用本地的ABD工具路径替换，该值需要在启动时，按照引导配置
     static String adbPath = "/Users/dee/Downloads/platform-tools/adb";
 
     final static String SCRIPT_SCREEN_CAP = "${adbpath} exec-out screencap -p > ${imagename}";
-    final static String SCRIPT_SCREEN_TOUCH = "${adbpath} shell input swipe 64 64 64 64 ${time}";
+    final static String SCRIPT_SCREEN_TOUCH = "${adbpath} shell input swipe ${x1} ${y1} ${x2} ${y2} ${time}";
     final static String SCRIPT_DEVICES = "${adbpath} devices";
+
+    public static boolean init(){
+        boolean isok = AdbToolHelper.setting();
+        if(!isok){
+            Log.println("应用启动失败.");
+            return false;
+        }
+        Log.println("应用启动成功.");
+        return true;
+    }
 
     private static String[] genBaseSysParams(){
         String[] args = new String[3];
@@ -47,7 +59,7 @@ public abstract class AdbToolHelper {
      */
     public static void screencap() {
         String[] args = genBaseSysParams();
-        args[2] = SCRIPT_SCREEN_CAP.replace("${adbpath}", adbPath).replace("${imagename}", "jumpgame.png");
+        args[2] = SCRIPT_SCREEN_CAP.replace("${adbpath}", adbPath).replace("${imagename}", JumpService.getScreencapPath());
         try {
             Runtime.getRuntime().exec(args).waitFor();
             Log.println("截屏成功");
@@ -64,7 +76,14 @@ public abstract class AdbToolHelper {
      * Andorid 版本需要高于 4.4
      */
     public static void screentouch(double time) {
-        String args = SCRIPT_SCREEN_TOUCH.replace("${adbpath}", adbPath).replace("${time}", ""+(int)time);
+        String times = (int)time + "";
+        String x1 = ((new Random()).nextInt(100) + (new Random()).nextInt(100) + 1) + "";
+        String y1 = ((new Random()).nextInt(100) + (new Random()).nextInt(100) + 1) + "";
+        String x2 = ((new Random()).nextInt(100) + (new Random()).nextInt(100) + 1) + "";
+        String y2 = ((new Random()).nextInt(100) + (new Random()).nextInt(100) + 1) + "";
+
+        String args = SCRIPT_SCREEN_TOUCH.replace("${adbpath}", adbPath).replace("${time}", times)
+                        .replace("${x1}", x1).replace("${y1}", y1).replace("${x2}", x2).replace("${y2}", y2);
         try {
             Runtime.getRuntime().exec(args).waitFor();
             Log.println("长按"+time+"毫秒");

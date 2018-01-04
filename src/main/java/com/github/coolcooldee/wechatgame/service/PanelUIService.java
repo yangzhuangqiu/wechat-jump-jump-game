@@ -1,5 +1,6 @@
 package com.github.coolcooldee.wechatgame.service;
 
+import com.github.coolcooldee.wechatgame.tools.android.AdbToolHelper;
 import com.github.coolcooldee.wechatgame.tools.log.Log;
 
 import javax.imageio.ImageIO;
@@ -23,11 +24,21 @@ import java.io.IOException;
 public class PanelUIService extends JFrame {
 
     public PanelUIService(){
+    }
+
+    public void showUI(){
         Log.println("正在绘制UI.");
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         this.setBounds(0,0,600,600);
         this.setVisible(true);
         this.add(new MyJPanel());
+        refreshUI();
+    }
+
+    public void refreshUI(){
+        AdbToolHelper.screencap();
+        this.getComponent(0).validate();
+        this.getComponent(0).repaint();
     }
 
 
@@ -61,7 +72,7 @@ public class PanelUIService extends JFrame {
                         JumpService.setEndPoint(null);
                         JumpService.setBeginPoint(null);
                         if(isok) {
-                            JumpService.refreshUI();
+                            refreshUI();
                         }
                     }
                 }

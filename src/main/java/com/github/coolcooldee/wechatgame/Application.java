@@ -9,13 +9,17 @@ package com.github.coolcooldee.wechatgame;
  */
 
 import com.github.coolcooldee.wechatgame.service.JumpService;
+import com.github.coolcooldee.wechatgame.service.PanelUIService;
+import com.github.coolcooldee.wechatgame.tools.android.AdbToolHelper;
 
 /**
  * 应用启动
  */
 public class Application {
     public static void main(String[] args) {
-        JumpService.init();
+        AdbToolHelper.init();
+        new PanelUIService().showUI();
+        //JumpService.init();
     }
 
 }
