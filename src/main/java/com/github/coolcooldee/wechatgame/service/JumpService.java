@@ -1,6 +1,7 @@
 package com.github.coolcooldee.wechatgame.service;
-import com.github.coolcooldee.wechatgame.tools.android.AdbToolHelper;
-import com.github.coolcooldee.wechatgame.tools.log.Log;
+import com.github.coolcooldee.wechatgame.tools.AdbToolKit;
+import com.github.coolcooldee.wechatgame.tools.LogToolKit;
+
 import java.awt.*;
 import java.util.HashMap;
 import java.util.Map;
@@ -48,12 +49,12 @@ public abstract class JumpService {
      */
     public static boolean jump(Point beginPoint, Point endPoint){
         int d = getDistance(beginPoint, endPoint);
-        Log.println("跳跃距离 "+d);
+        LogToolKit.println("跳跃距离 "+d);
         if(d<50){
-            Log.println("距离太小，重新跳跃 "+d);
+            LogToolKit.println("距离太小，重新跳跃 "+d);
             return false;
         }
-        AdbToolHelper.screentouch(Math.floor(d * getDistance2timeRatio()));
+        AdbToolKit.screentouch(Math.floor(d * getDistance2timeRatio()));
         try {
             Thread.sleep(1500);
         } catch (InterruptedException e1) {
@@ -79,7 +80,7 @@ public abstract class JumpService {
     public static void setBeginPoint(Point beginPoint) {
         JumpService.beginPoint = beginPoint;
         if(beginPoint!=null){
-            Log.println("起跳点 (" + beginPoint.getX() + ", " + beginPoint.getY() + ")");
+            LogToolKit.println("起跳点 (" + beginPoint.getX() + ", " + beginPoint.getY() + ")");
         }
     }
 
@@ -106,7 +107,7 @@ public abstract class JumpService {
     public static void setEndPoint(Point endPoint) {
         JumpService.endPoint = endPoint;
         if(endPoint!=null){
-            Log.println("目标点 ("+endPoint.getX()+", "+endPoint.getY()+")");
+            LogToolKit.println("目标点 ("+endPoint.getX()+", "+endPoint.getY()+")");
         }
 
     }

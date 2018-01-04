@@ -1,6 +1,6 @@
 package com.github.coolcooldee.wechatgame.service;
 
-import com.github.coolcooldee.wechatgame.tools.log.Log;
+import com.github.coolcooldee.wechatgame.tools.LogToolKit;
 
 import java.io.*;
 import java.util.Properties;
@@ -30,7 +30,7 @@ public abstract class PropertiesService {
             oFile = new FileOutputStream(PRO_FILE_NAME);
             pro.store(oFile, "app setting");
             oFile.close();
-            Log.println("保存ADB地址配置信息到 "+PRO_FILE_NAME);
+            LogToolKit.println("保存ADB地址配置信息到 "+PRO_FILE_NAME);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -42,7 +42,7 @@ public abstract class PropertiesService {
         Properties pro = new Properties();
         File file = new File(PRO_FILE_NAME);
         if(file.exists()){
-            Log.println("读取配置文件 "+PRO_FILE_NAME);
+            LogToolKit.println("读取配置文件 "+PRO_FILE_NAME);
             try {
                 FileInputStream in = new FileInputStream(PRO_FILE_NAME);
                 pro.load(in);
@@ -58,9 +58,9 @@ public abstract class PropertiesService {
                     FileInputStream in = new FileInputStream(PRO_FILE_NAME);
                     pro.load(in);
                     in.close();
-                    Log.println("成功创建配置文件 "+PRO_FILE_NAME);
+                    LogToolKit.println("成功创建配置文件 "+PRO_FILE_NAME);
                 }else{
-                    Log.println(" 配置文件创建失败！");
+                    LogToolKit.println(" 配置文件创建失败！");
                 }
             } catch (IOException e) {
                 e.printStackTrace();

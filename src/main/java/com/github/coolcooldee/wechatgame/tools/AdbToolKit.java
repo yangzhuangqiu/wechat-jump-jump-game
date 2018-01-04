@@ -1,4 +1,4 @@
-package com.github.coolcooldee.wechatgame.tools.android;
+package com.github.coolcooldee.wechatgame.tools;
 
 /**
  * @Description
@@ -10,13 +10,11 @@ package com.github.coolcooldee.wechatgame.tools.android;
 
 import com.github.coolcooldee.wechatgame.service.JumpService;
 import com.github.coolcooldee.wechatgame.service.PropertiesService;
-import com.github.coolcooldee.wechatgame.tools.log.Log;
 
 import javax.swing.*;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Properties;
 import java.util.Random;
 
 /**
@@ -24,7 +22,7 @@ import java.util.Random;
  * 需要先下载 Android Debug Bridge 到本地，参考地址：https://developer.android.com/studio/command-line/adb.html#forwardports
  *
  */
-public abstract class AdbToolHelper {
+public abstract class AdbToolKit {
 
     //请使用本地的ABD工具路径替换，该值需要在启动时，按照引导配置
     static String adbPath = "/Users/root/Downloads/platform-tools/adb";
@@ -35,12 +33,20 @@ public abstract class AdbToolHelper {
     static boolean isSetting = false;
 
     public static boolean init(){
+        LogToolKit.println("正在启动应用, 请稍等...");
         boolean isok = setting();
         if(!isok){
-            Log.println("应用启动失败.");
+            LogToolKit.println("应用启动失败.");
             return false;
         }
-        Log.println("应用启动成功.");
+        screencap();
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        screencap();
+        LogToolKit.println("应用启动成功.");
         return true;
     }
 
@@ -48,11 +54,11 @@ public abstract class AdbToolHelper {
         String[] args = new String[3];
         String os = System.getProperty("os.name");
         if (os.toLowerCase().trim().startsWith("win")) {
-            //Log.println("系统检测 win.");
+            //LogToolKit.println("系统检测 win.");
             args[0] = "cmd.exe";
             args[1] = "/c";
         }else{
-            //Log.println("系统检测 Linux / Mac os.");
+            //LogToolKit.println("系统检测 Linux / Mac os.");
             args[0] = "bash";
             args[1] = "-c";
         }
@@ -67,7 +73,6 @@ public abstract class AdbToolHelper {
         args[2] = SCRIPT_SCREEN_CAP.replace("${adbpath}", adbPath).replace("${imagename}", JumpService.getScreencapPath());
         try {
             Runtime.getRuntime().exec(args).waitFor();
-            //Log.println("截屏成功");
         } catch (IOException e) {
             e.printStackTrace();
         } catch (InterruptedException e) {
@@ -91,7 +96,7 @@ public abstract class AdbToolHelper {
                         .replace("${x1}", x1).replace("${y1}", y1).replace("${x2}", x2).replace("${y2}", y2);
         try {
             Runtime.getRuntime().exec(args).waitFor();
-            Log.println("长按"+time+"毫秒");
+            LogToolKit.println("长按"+time+"毫秒");
         } catch (IOException e) {
             e.printStackTrace();
         } catch (InterruptedException e) {
@@ -112,7 +117,7 @@ public abstract class AdbToolHelper {
      */
     public static int checkAdbAndDevice(String path){
         if(path==null || "".equals(path)){
-            Log.println("ADB工具路径未设置.");
+            LogToolKit.println("ADB工具路径未设置.");
             return -1;
         }
         String[] args = genBaseSysParams();
@@ -126,27 +131,27 @@ public abstract class AdbToolHelper {
             BufferedReader reader = new BufferedReader(new InputStreamReader(is));
             String line;
             List<String> lineList = new ArrayList<String>();
-            Log.println("check result:");
+            LogToolKit.println("check result:");
             while ((line = reader.readLine()) != null) {
                 lineList.add(line);
-                Log.println(line);
+                LogToolKit.println(line);
             }
             if(!lineList.isEmpty()) {
                 if (lineList.get(0).indexOf("List of devices attached") > -1) {
                     if (lineList.size() > 1 && lineList.get(1).length() > 0) {
                         stauts = 1;
-                        Log.println("ADB检测 和 Android设备检测正常.");
+                        LogToolKit.println("ADB检测 和 Android设备检测正常.");
                     } else {
                         stauts = -2;
-                        Log.println("设备检测异常，请确认是否连接正常.");
+                        LogToolKit.println("设备检测异常，请确认是否连接正常.");
                     }
                 } else {
                     stauts = -1;
-                    Log.println("ADB工具检测异常，未找到.");
+                    LogToolKit.println("ADB工具检测异常，未找到.");
                 }
             }else{
                 stauts = -1;
-                Log.println("ADB工具检测异常，未找到.");
+                LogToolKit.println("ADB工具检测异常，未找到.");
             }
             process.waitFor();
             is.close();
@@ -163,10 +168,10 @@ public abstract class AdbToolHelper {
 
     public static boolean setting(){
         String tempADBPath = PropertiesService.getSettingADBPath();
-        int checkR = AdbToolHelper.checkAdbAndDevice(tempADBPath);
+        int checkR = AdbToolKit.checkAdbAndDevice(tempADBPath);
         if(checkR==1) {
             setAdbPath(tempADBPath);
-            Log.println("ADB工具地址设置成功：" + adbPath);
+            LogToolKit.println("ADB工具地址设置成功：" + adbPath);
             return true;
         }else if(checkR == -1){
             if(isSetting) {
@@ -189,13 +194,13 @@ public abstract class AdbToolHelper {
         }
         PropertiesService.setSettingADBPath(tempADBPath);
         setAdbPath(tempADBPath);
-        Log.println("ADB工具地址设置成功：" + adbPath);
+        LogToolKit.println("ADB工具地址设置成功：" + adbPath);
         return true;
     }
 
 
 
     public static void setAdbPath(String adbPath) {
-        AdbToolHelper.adbPath = adbPath;
+        AdbToolKit.adbPath = adbPath;
     }
 }

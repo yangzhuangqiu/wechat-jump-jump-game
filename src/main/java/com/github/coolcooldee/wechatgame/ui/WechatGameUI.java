@@ -1,7 +1,8 @@
-package com.github.coolcooldee.wechatgame.service;
+package com.github.coolcooldee.wechatgame.ui;
 
-import com.github.coolcooldee.wechatgame.tools.android.AdbToolHelper;
-import com.github.coolcooldee.wechatgame.tools.log.Log;
+import com.github.coolcooldee.wechatgame.service.JumpService;
+import com.github.coolcooldee.wechatgame.tools.AdbToolKit;
+import com.github.coolcooldee.wechatgame.tools.LogToolKit;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -22,16 +23,14 @@ import java.io.IOException;
  * @Date 2018/1/3
  */
 
-public class PanelUIService extends JFrame {
+public class WechatGameUI extends JFrame {
 
-    public PanelUIService(){
+    public WechatGameUI(){
     }
 
     public void initGUI(){
-        Log.println("UI 启动中，请稍等");
-        AdbToolHelper.screencap();
+        LogToolKit.println("UI 启动中");
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        Log.println("UI 启动成功.");
         this.setVisible(true);
         this.setBounds(0,0,600,1280);
         this.add(new MyJPanel());
@@ -39,22 +38,26 @@ public class PanelUIService extends JFrame {
     }
 
     private void refreshUI(){
-        AdbToolHelper.screencap();
+        AdbToolKit.screencap();
         this.getComponent(0).validate();
         this.getComponent(0).repaint();
-        Log.println("重新绘制 UI 成功, 等待操作 ...");
+        LogToolKit.println("重新绘制 UI 成功, 等待操作 ...");
     }
 
-    class MyJPanel extends JScrollPane {
+    class MyJPanel extends JPanel {
+
         public MyJPanel(){
             this.setRequestFocusEnabled(true);
             this.addMouseListener(getMyMouseListener());
         }
 
+        public void paintComponent(Graphics g){
+
+        }
+
         public void paint(Graphics g){
-            String filePath = JumpService.getScreencapPath();
-            File file = new File(filePath);
-            if(file.exists()) {
+            File file = new File(JumpService.getScreencapPath());
+            if(file.exists() && file.isFile() && file.length()>0) {
                 Image image = null;
                 try {
                     image = ImageIO.read(file);
@@ -73,7 +76,7 @@ public class PanelUIService extends JFrame {
                             } else {
                                 resulotionStr.append(height).append("*").append(width);
                             }
-                            Log.println("屏幕分辨率：" + resulotionStr);
+                            LogToolKit.println("屏幕分辨率：" + resulotionStr);
                             Double distance2timeRatio = JumpService.getDistance2timeRatioByResolution(resulotionStr.toString());
                             if (distance2timeRatio != null) {
                                 JumpService.setDistance2timeRatio(distance2timeRatio);
@@ -86,9 +89,13 @@ public class PanelUIService extends JFrame {
 
                     }
                 }
-            }else{
-                Log.println("未找到截图");
             }
+//            else{
+//                LogToolKit.println("exists:"+file.exists());
+//                LogToolKit.println("isFile"+file.isFile());
+//                LogToolKit.println("length"+file.length());
+//                LogToolKit.println("未找到截图");
+//            }
         }
 
         private MouseMotionListener getMouseMotionListener() {
@@ -98,7 +105,7 @@ public class PanelUIService extends JFrame {
                 }
 
                 public void mouseMoved(MouseEvent e) {
-                    Log.println("当前坐标("+e.getX()+","+e.getY()+")");
+                    LogToolKit.println("当前坐标("+e.getX()+","+e.getY()+")");
                 }
             };
         }

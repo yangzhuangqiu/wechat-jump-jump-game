@@ -8,17 +8,16 @@ package com.github.coolcooldee.wechatgame;
  * @Date 2018/1/3
  */
 
-import com.github.coolcooldee.wechatgame.service.PanelUIService;
-import com.github.coolcooldee.wechatgame.tools.android.AdbToolHelper;
+import com.github.coolcooldee.wechatgame.ui.WechatGameUI;
+import com.github.coolcooldee.wechatgame.tools.AdbToolKit;
 
 /**
  * 应用启动
  */
 public class Application {
     public static void main(String[] args) {
-        AdbToolHelper.init();
-        new PanelUIService().initGUI();
-        //JumpService.init();
+        AdbToolKit.init();
+        new WechatGameUI().initGUI();
     }
 
 }
