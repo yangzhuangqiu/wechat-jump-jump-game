@@ -44,9 +44,6 @@ public class PanelUIService extends JFrame {
         Log.println("重新绘制 UI 成功, 等待操作 ...");
     }
 
-
-
-
     class MyJPanel extends JScrollPane {
         public MyJPanel(){
             this.addMouseListener(getMyMouseListener());
@@ -68,7 +65,21 @@ public class PanelUIService extends JFrame {
                     e.printStackTrace();
                 }
                 try {
-                    g.drawImage(image, 0, 0, image.getWidth(null) * 8 / 10, image.getHeight(null) * 8 / 10, null);
+                    int width = image.getWidth(null);
+                    int height = image.getHeight(null);
+                    StringBuffer resulotionStr = new StringBuffer();
+                    if(height>width){
+                        resulotionStr.append(width).append("*").append(height);
+                    }else{
+                        resulotionStr.append(height).append("*").append(width);
+                    }
+                    Log.println("屏幕分辨率："+resulotionStr);
+                    Double distance2timeRatio = JumpService.getDistance2timeRatioByResolution(resulotionStr.toString());
+                    if(distance2timeRatio!=null){
+                        JumpService.setDistance2timeRatio(distance2timeRatio);
+                    }
+
+                    g.drawImage(image, 0, 0, width, height, null);
                 } catch (Exception e) {
                     e.printStackTrace();
 
