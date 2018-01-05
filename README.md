@@ -70,8 +70,10 @@
 
     4.重复以上操作
 
-效果图
-===
+刷分效果
+====
+- __效果图__
+
     ![image](https://github.com/coolcooldee/wechat-jump-game/blob/master/doc/demo.gif)
 
 
