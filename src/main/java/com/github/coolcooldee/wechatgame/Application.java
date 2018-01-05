@@ -8,6 +8,7 @@ package com.github.coolcooldee.wechatgame;
  * @Date 2018/1/3
  */
 
+import com.github.coolcooldee.wechatgame.tools.LogToolKit;
 import com.github.coolcooldee.wechatgame.ui.WechatGameUI;
 import com.github.coolcooldee.wechatgame.tools.AdbToolKit;
 
@@ -16,6 +17,7 @@ import com.github.coolcooldee.wechatgame.tools.AdbToolKit;
  */
 public class Application {
     public static void main(String[] args) {
+        LogToolKit.println("V1.0.11");
         AdbToolKit.init();
         new WechatGameUI().initGUI();
     }
