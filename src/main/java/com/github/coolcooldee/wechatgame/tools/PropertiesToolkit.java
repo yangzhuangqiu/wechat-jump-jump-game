@@ -1,4 +1,4 @@
-package com.github.coolcooldee.wechatgame.service;
+package com.github.coolcooldee.wechatgame.tools;
 
 import com.github.coolcooldee.wechatgame.tools.LogToolKit;
 
@@ -13,7 +13,7 @@ import java.util.Properties;
  * @since 1.0
  */
 
-public abstract class PropertiesService {
+public abstract class PropertiesToolkit {
 
     final static String PRO_FILE_NAME = "setting.properties";
     final static String PRO_ADB_PATH = "adb_path";

@@ -9,7 +9,6 @@ package com.github.coolcooldee.wechatgame.tools;
  */
 
 import com.github.coolcooldee.wechatgame.service.JumpService;
-import com.github.coolcooldee.wechatgame.service.PropertiesService;
 
 import javax.swing.*;
 import java.io.*;
@@ -167,7 +166,7 @@ public abstract class AdbToolKit {
     }
 
     public static boolean setting(){
-        String tempADBPath = PropertiesService.getSettingADBPath();
+        String tempADBPath = PropertiesToolkit.getSettingADBPath();
         int checkR = AdbToolKit.checkAdbAndDevice(tempADBPath);
         if(checkR==1) {
             setAdbPath(tempADBPath);
@@ -181,7 +180,7 @@ public abstract class AdbToolKit {
             Object adbpathObject = JOptionPane.showInputDialog(null,"请输入ADB工具地址：\n","系统参数设置",JOptionPane.PLAIN_MESSAGE,null,null,"例如：/Users/dee/Downloads/platform-tools/adb");
             if(adbpathObject!=null){
                 tempADBPath = adbpathObject.toString();
-                PropertiesService.setSettingADBPath(tempADBPath);
+                PropertiesToolkit.setSettingADBPath(tempADBPath);
                 setting();
                 return true;
             }else{
@@ -192,7 +191,7 @@ public abstract class AdbToolKit {
             setting();
             return true;
         }
-        PropertiesService.setSettingADBPath(tempADBPath);
+        PropertiesToolkit.setSettingADBPath(tempADBPath);
         setAdbPath(tempADBPath);
         LogToolKit.println("ADB工具地址设置成功：" + adbPath);
         return true;

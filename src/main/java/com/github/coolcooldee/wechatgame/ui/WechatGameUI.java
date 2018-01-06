@@ -7,6 +7,7 @@ import com.github.coolcooldee.wechatgame.tools.LogToolKit;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.InputEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
@@ -38,6 +39,8 @@ public class WechatGameUI extends JFrame {
     }
 
     private void refreshUI(){
+        JumpService.setEndPoint(null);
+        JumpService.setBeginPoint(null);
         AdbToolKit.screencap();
         this.getComponent(0).validate();
         this.getComponent(0).repaint();
@@ -113,18 +116,27 @@ public class WechatGameUI extends JFrame {
         private MouseListener getMyMouseListener(){
             return new MouseListener() {
                 public void mouseClicked(MouseEvent e) {
-                    if(JumpService.getBeginPoint()==null){
-                        JumpService.setBeginPoint(e.getPoint());
-
-                    }else{
-                        JumpService.setEndPoint(e.getPoint());
-                        boolean isok = JumpService.jump(JumpService.getBeginPoint(), JumpService.getEndPoint());
-                        JumpService.setEndPoint(null);
-                        JumpService.setBeginPoint(null);
-                        if(isok) {
-                            refreshUI();
+                    //左键
+                    if(MouseEvent.BUTTON1 ==  e.getButton()){
+                        if(JumpService.getBeginPoint()==null){
+                            JumpService.setBeginPoint(e.getPoint());
+                        }else{
+                            JumpService.setEndPoint(e.getPoint());
+                            boolean isok = JumpService.jump(JumpService.getBeginPoint(), JumpService.getEndPoint());
+                            JumpService.setEndPoint(null);
+                            JumpService.setBeginPoint(null);
+                            if(isok) {
+                                refreshUI();
+                            }
                         }
                     }
+                    //右键
+                    if(MouseEvent.BUTTON3 ==  e.getButton()){
+                        refreshUI();
+                    }
+
+
+
                 }
 
                 public void mousePressed(MouseEvent e) {
