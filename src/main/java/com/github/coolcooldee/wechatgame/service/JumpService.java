@@ -20,6 +20,8 @@ public abstract class JumpService {
 
     private static Double distance2timeRatio = null;
     private static final String SCREENCAP_PATH = "jumpgame.png";
+
+    //分辨率与按压时长的比率关系
     private static final Map<String, Double> resolutionMapDistance2timeRatio = new HashMap<String, Double>();
     static {
         resolutionMapDistance2timeRatio.put("1600*2560",0.92*2);
@@ -29,6 +31,7 @@ public abstract class JumpService {
         resolutionMapDistance2timeRatio.put("720*1280",2.078*2);
     }
 
+    //分辨率与显示界面的实际长宽的比率
     private static final Map<String, Double> resolutionMapUIRate = new HashMap<String, Double>();
     static {
         resolutionMapUIRate.put("1600*2560",0.05);
@@ -38,8 +41,10 @@ public abstract class JumpService {
         resolutionMapUIRate.put("720*1280",0.5);
     }
 
-    static Point beginPoint = null;
-    static Point endPoint = null;
+    //起跳点
+    private static Point beginPoint = new Point(0,0);
+    //目标点
+    private static Point endPoint = new Point(0,0);
 
 
     /**
@@ -49,18 +54,21 @@ public abstract class JumpService {
      */
     public static boolean jump(Point beginPoint, Point endPoint){
         int d = getDistance(beginPoint, endPoint);
-        LogToolKit.println("跳跃距离 "+d);
-        if(d<50){
-            LogToolKit.println("距离太小，重新跳跃 "+d);
-            return false;
+        if(d!=0) {
+            LogToolKit.println("跳跃距离 " + d);
+//            if (d < 20) {
+//                LogToolKit.println("距离太小，重新跳跃 " + d);
+//                return false;
+//            }
+            AdbToolKit.screentouch(Math.floor(d * getDistance2timeRatio()));
+            try {
+                Thread.sleep(1500);
+            } catch (InterruptedException e1) {
+                e1.printStackTrace();
+            }
+            return true;
         }
-        AdbToolKit.screentouch(Math.floor(d * getDistance2timeRatio()));
-        try {
-            Thread.sleep(1500);
-        } catch (InterruptedException e1) {
-            e1.printStackTrace();
-        }
-        return true;
+        return false;
     }
 
     private static int getDistance(Point a, Point b) {
@@ -78,9 +86,13 @@ public abstract class JumpService {
     }
 
     public static void setBeginPoint(Point beginPoint) {
-        JumpService.beginPoint = beginPoint;
         if(beginPoint!=null){
-            LogToolKit.println("起跳点 (" + beginPoint.getX() + ", " + beginPoint.getY() + ")");
+            JumpService.beginPoint.setLocation(beginPoint.getX(), beginPoint.getY());
+            if(endPoint.getX()>0 && endPoint.getY()>=0) {
+                LogToolKit.println("起跳点 (" + beginPoint.getX() + ", " + beginPoint.getY() + ")");
+            }
+        }else{
+            JumpService.beginPoint.setLocation(0,0);
         }
     }
 
@@ -105,9 +117,13 @@ public abstract class JumpService {
     }
 
     public static void setEndPoint(Point endPoint) {
-        JumpService.endPoint = endPoint;
         if(endPoint!=null){
-            LogToolKit.println("目标点 ("+endPoint.getX()+", "+endPoint.getY()+")");
+            JumpService.endPoint.setLocation(endPoint.getX(), endPoint.getY());
+            if(endPoint.getX()>0 && endPoint.getY()>=0) {
+                LogToolKit.println("目标点 (" + endPoint.getX() + ", " + endPoint.getY() + ")");
+            }
+        }else{
+            JumpService.endPoint.setLocation(0,0);
         }
 
     }
