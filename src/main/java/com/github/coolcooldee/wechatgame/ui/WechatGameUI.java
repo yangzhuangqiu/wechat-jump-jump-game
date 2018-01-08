@@ -28,16 +28,35 @@ public class WechatGameUI extends JFrame {
     static int fheight = 1000;
     static int width = 600; //default
     static int height = 1000; //default
-
     static double uirate = 1;
+    static int fx = 0;
+    static int fy = 0;
     static JLabel beginLable = new JLabel();
     static JLabel endLable = new JLabel();
 
-    public WechatGameUI() {
-    }
-
     public void initGUI() {
         LogToolKit.println("UI 启动中");
+        initWidthHeight();
+        this.setBounds(fx, fy, fwidth, fheight);
+        this.setLocationRelativeTo(null);
+        this.setLayout(new BorderLayout());
+        this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        this.setVisible(true);
+        //主界面板
+        JPanel corePanel = new CoreJPanel();
+        //操作面板
+        JPanel settingPanel = new SettingJPanel();
+        this.add(corePanel, BorderLayout.CENTER);
+        this.add(settingPanel, BorderLayout.SOUTH);
+        refreshCorePanelUI();
+    }
+
+    private static void initWidthHeight(){
+        //获取截图大小，并初始化窗体大小和位置
+        int screenWidth = (int)Toolkit.getDefaultToolkit().getScreenSize().getWidth();
+        int screenheight = (int)Toolkit.getDefaultToolkit().getScreenSize().getHeight();
+        fx = (screenWidth-fwidth)/2;
+        fy = (screenheight-fheight)/2;
         Image image = getImage4WidthAndHeight();
         if (image != null) {
             int tempWidth = image.getWidth(null);
@@ -61,18 +80,9 @@ public class WechatGameUI extends JFrame {
             fheight = (int) ((tempHeight+200) * uirate);
             width = (int) (tempWidth * uirate);
             height = (int) (tempHeight * uirate);
+        }else{
+            LogToolKit.println("未找到截图，请确认ADB是否连接正常。");
         }
-        this.setLayout(new BorderLayout());
-        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        this.setVisible(true);
-        this.setBounds(0, 0, fwidth, fheight);
-        //主面板
-        JPanel settingPanel = new SettingJPanel();
-        //主界面
-        JPanel corePanel = new CoreJPanel();
-        this.add(corePanel, BorderLayout.CENTER);
-        this.add(settingPanel, BorderLayout.SOUTH);
-        refreshCorePanelUI();
     }
 
     private void refreshCorePanelUI() {
@@ -82,19 +92,6 @@ public class WechatGameUI extends JFrame {
         beginLable.setText("起跳点：空");
         endLable.setText("目标点：空");
         LogToolKit.println("重新绘制 UI 成功, 等待操作 ...");
-    }
-
-    class SettingJPanel extends JPanel {
-        public SettingJPanel() {
-            this.setBorder(BorderFactory.createTitledBorder("操作"));
-            this.setLayout(new BorderLayout());
-            beginLable = new JLabel("起跳点：空");
-            endLable = new JLabel("目标点：空");
-            this.add(beginLable, BorderLayout.WEST);
-            this.add(endLable, BorderLayout.EAST);
-            this.add(new RefreshButton(), BorderLayout.SOUTH);
-            this.setVisible(true);
-        }
     }
 
     class MyLable extends JLabel {
@@ -129,19 +126,14 @@ public class WechatGameUI extends JFrame {
                 }
             });
         }
-
     }
 
     class CoreJPanel extends JPanel {
 
         public CoreJPanel() {
-            this.setBorder(BorderFactory.createTitledBorder("主界面"));
+            this.setBorder(BorderFactory.createTitledBorder("操作"));
             this.setRequestFocusEnabled(true);
             this.addMouseListener(getMyMouseListener());
-        }
-
-        public void paintComponent(Graphics g) {
-
         }
 
         public void paint(Graphics g) {
@@ -200,6 +192,19 @@ public class WechatGameUI extends JFrame {
             };
         }
 
+    }
+
+    class SettingJPanel extends JPanel {
+        public SettingJPanel() {
+            this.setBorder(BorderFactory.createTitledBorder("操作"));
+            this.setLayout(new BorderLayout());
+            beginLable = new JLabel("起跳点：空");
+            endLable = new JLabel("目标点：空");
+            this.add(beginLable, BorderLayout.WEST);
+            this.add(endLable, BorderLayout.EAST);
+            this.add(new RefreshButton(), BorderLayout.SOUTH);
+            this.setVisible(true);
+        }
     }
 
     private static Image getImage4WidthAndHeight() {

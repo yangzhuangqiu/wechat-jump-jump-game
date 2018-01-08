@@ -24,21 +24,23 @@ public abstract class JumpService {
     //分辨率与按压时长的比率关系
     private static final Map<String, Double> resolutionMapDistance2timeRatio = new HashMap<String, Double>();
     static {
-        resolutionMapDistance2timeRatio.put("1600*2560",0.92*2);
-        resolutionMapDistance2timeRatio.put("1440*2560",1.039*2);
-        resolutionMapDistance2timeRatio.put("1080*2220",1.3903*2);
-        resolutionMapDistance2timeRatio.put("1080*1920",1.3903*2);//debug
-        resolutionMapDistance2timeRatio.put("720*1280",2.078*2);
+        resolutionMapDistance2timeRatio.put("1600*2560",0.92*4);
+        resolutionMapDistance2timeRatio.put("1440*2960",1.02*4);
+        resolutionMapDistance2timeRatio.put("1440*2560",1.039*2.5);
+        resolutionMapDistance2timeRatio.put("1080*2220",1.3903*2.5);
+        resolutionMapDistance2timeRatio.put("1080*1920",1.3903*2);//ok
+        resolutionMapDistance2timeRatio.put("720*1280",2.078*2);//ok
     }
 
     //分辨率与显示界面的实际长宽的比率
     private static final Map<String, Double> resolutionMapUIRate = new HashMap<String, Double>();
     static {
-        resolutionMapUIRate.put("1600*2560",0.05);
-        resolutionMapUIRate.put("1440*2560",0.1);
-        resolutionMapUIRate.put("1080*2220",0.25);
-        resolutionMapUIRate.put("1080*1920",0.5);
-        resolutionMapUIRate.put("720*1280",0.5);
+        resolutionMapUIRate.put("1600*2560",0.25);
+        resolutionMapUIRate.put("1440*2960",0.25);
+        resolutionMapUIRate.put("1440*2560",0.4);
+        resolutionMapUIRate.put("1080*2220",0.4);
+        resolutionMapUIRate.put("1080*1920",0.5); //ok
+        resolutionMapUIRate.put("720*1280",0.5);  //ok
     }
 
     //起跳点
