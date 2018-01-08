@@ -90,7 +90,7 @@ public abstract class JumpService {
     public static void setBeginPoint(Point beginPoint) {
         if(beginPoint!=null){
             JumpService.beginPoint.setLocation(beginPoint.getX(), beginPoint.getY());
-            if(endPoint.getX()>0 && endPoint.getY()>=0) {
+            if(beginPoint.getX()>0 && beginPoint.getY()>=0) {
                 LogToolKit.println("起跳点 (" + beginPoint.getX() + ", " + beginPoint.getY() + ")");
             }
         }else{

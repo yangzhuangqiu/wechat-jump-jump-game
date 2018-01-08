@@ -22,7 +22,7 @@ import java.io.IOException;
  * @Date 2018/1/3
  */
 
-public class WechatGameUI extends JFrame {
+public abstract class WechatGameUI {
 
     static int fwidth = 600;
     static int fheight = 1000;
@@ -31,23 +31,28 @@ public class WechatGameUI extends JFrame {
     static double uirate = 1;
     static int fx = 0;
     static int fy = 0;
+
+    static JFrame mainFrame ;
+    static JPanel corePanel;
+    static JPanel settingPanel;
     static JLabel beginLable = new JLabel();
     static JLabel endLable = new JLabel();
 
-    public void initGUI() {
+    public static void init() {
+        mainFrame = new JFrame();
         LogToolKit.println("UI 启动中");
         initWidthHeight();
-        this.setBounds(fx, fy, fwidth, fheight);
-        this.setLocationRelativeTo(null);
-        this.setLayout(new BorderLayout());
-        this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        this.setVisible(true);
+        mainFrame.setBounds(fx, fy, fwidth, fheight);
+        mainFrame.setLocationRelativeTo(null);
+        mainFrame.setLayout(new BorderLayout());
+        mainFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        mainFrame.setVisible(true);
         //主界面板
-        JPanel corePanel = new CoreJPanel();
+        corePanel = new CoreJPanel();
         //操作面板
-        JPanel settingPanel = new SettingJPanel();
-        this.add(corePanel, BorderLayout.CENTER);
-        this.add(settingPanel, BorderLayout.SOUTH);
+        settingPanel = new SettingJPanel();
+        mainFrame.add(corePanel, BorderLayout.CENTER);
+        mainFrame.add(settingPanel, BorderLayout.SOUTH);
         refreshCorePanelUI();
     }
 
@@ -85,10 +90,10 @@ public class WechatGameUI extends JFrame {
         }
     }
 
-    private void refreshCorePanelUI() {
+    private static void refreshCorePanelUI() {
         AdbToolKit.screencap();
-        this.getComponent(0).validate();
-        this.getComponent(0).repaint();
+        mainFrame.getComponent(0).validate();
+        mainFrame.getComponent(0).repaint();
         beginLable.setText("起跳点：空");
         endLable.setText("目标点：空");
         LogToolKit.println("重新绘制 UI 成功, 等待操作 ...");
@@ -100,7 +105,7 @@ public class WechatGameUI extends JFrame {
         }
     }
 
-    class RefreshButton extends JButton {
+    static class RefreshButton extends JButton {
         public RefreshButton() {
             this.setText("刷新UI");
             this.setVisible(true);
@@ -128,7 +133,7 @@ public class WechatGameUI extends JFrame {
         }
     }
 
-    class CoreJPanel extends JPanel {
+    static  class CoreJPanel extends JPanel {
 
         public CoreJPanel() {
             this.setBorder(BorderFactory.createTitledBorder("操作"));
@@ -148,7 +153,6 @@ public class WechatGameUI extends JFrame {
         private MouseListener getMyMouseListener() {
             return new MouseListener() {
                 public void mouseClicked(MouseEvent e) {
-                    LogToolKit.println("点击" + System.currentTimeMillis());
                     //左键
                     if (MouseEvent.BUTTON1 == e.getButton()) {
                         if (JumpService.getBeginPoint().getX() == 0 && JumpService.getBeginPoint().getY() == 0) {
@@ -194,7 +198,7 @@ public class WechatGameUI extends JFrame {
 
     }
 
-    class SettingJPanel extends JPanel {
+    static class SettingJPanel extends JPanel {
         public SettingJPanel() {
             this.setBorder(BorderFactory.createTitledBorder("操作"));
             this.setLayout(new BorderLayout());

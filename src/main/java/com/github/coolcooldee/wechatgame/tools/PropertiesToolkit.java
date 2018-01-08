@@ -15,8 +15,37 @@ import java.util.Properties;
 
 public abstract class PropertiesToolkit {
 
+    static String jarPath ;
     final static String PRO_FILE_NAME = "setting.properties";
-    final static String PRO_ADB_PATH = "adb_path";
+    final static String PRO_ADB_PATH = "adb_path"; //adb工具路径
+    final static String PRO_UI_RATIO = "ui_ratio"; //界面的缩放比率
+    final static String PRO_JUMP_COEFFICIENT = "jump_coefficient";
+
+    public static void init(){
+        jarPath = System.getProperty("user.dir")+File.separator;
+        LogToolKit.println("执行应用目录为："+jarPath);
+        File file = new File(PRO_FILE_NAME);
+        if(!file.exists()){
+            try {
+                boolean r =file.createNewFile();
+                if(r) {
+                    FileOutputStream newFileOutputStream = new FileOutputStream(PRO_FILE_NAME);
+                    Properties properties = new Properties();
+                    properties.setProperty(PRO_ADB_PATH,"E:\\software\\android-platform-tools\\adb");
+                    properties.setProperty(PRO_UI_RATIO,"1");
+                    properties.setProperty(PRO_JUMP_COEFFICIENT,"1");
+                    properties.store(newFileOutputStream, "init setting");
+                    newFileOutputStream.flush();
+                    newFileOutputStream.close();
+                    LogToolKit.println("成功创建并初始化配置文件 "+jarPath+PRO_FILE_NAME);
+                }else{
+                    LogToolKit.println(" 配置文件创建失败！");
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
 
     public static String getSettingADBPath(){
         return getSettingProperties().getProperty(PRO_ADB_PATH);

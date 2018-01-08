@@ -10,7 +10,9 @@ package com.github.coolcooldee.wechatgame.tools;
 
 import com.github.coolcooldee.wechatgame.service.JumpService;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
+import java.awt.image.BufferedImage;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -26,15 +28,16 @@ public abstract class AdbToolKit {
     //请使用本地的ABD工具路径替换，该值需要在启动时，按照引导配置
     static String adbPath = "/Users/root/Downloads/platform-tools/adb";
 
-    final static String SCRIPT_SCREEN_CAP = "${adbpath} exec-out screencap -p > ${imagename}";
+    final static String SCRIPT_SCREEN_CAP_METHOD1 = "${adbpath} exec-out screencap -p > ${imagename}";
+    final static String SCRIPT_SCREEN_CAP_METHOD2_1 = "${adbpath} shell screencap -p /sdcard/${imagename}";
+    final static String SCRIPT_SCREEN_CAP_METHOD2_2 = "${adbpath} pull /sdcard/${imagename} > ./${imagename}";
     final static String SCRIPT_SCREEN_TOUCH = "${adbpath} shell input swipe ${x1} ${y1} ${x2} ${y2} ${time}";
     final static String SCRIPT_DEVICES = "${adbpath} devices";
     static boolean isSetting = false;
 
     public static boolean init(){
         LogToolKit.println("正在启动应用, 请稍等...");
-        boolean isok = setting();
-        if(!isok){
+        if(!isADBToolOk()){
             LogToolKit.println("应用启动失败.");
             return false;
         }
@@ -67,11 +70,50 @@ public abstract class AdbToolKit {
     /**
      * ADB手机屏幕截图
      */
+    private static boolean isSettingScreencapMethod = false;
+    private static int screencapMethod = 0;
     public static void screencap() {
         String[] args = genBaseSysParams();
-        args[2] = SCRIPT_SCREEN_CAP.replace("${adbpath}", adbPath).replace("${imagename}", JumpService.getScreencapPath());
         try {
-            Runtime.getRuntime().exec(args).waitFor();
+            if(!isSettingScreencapMethod){
+                LogToolKit.println("尝试使用方式一截图。");
+                args[2] = SCRIPT_SCREEN_CAP_METHOD1.replace("${adbpath}", adbPath).replace("${imagename}", JumpService.getScreencapPath());
+                Runtime.getRuntime().exec(args).waitFor();
+                if(isImageOk()){
+                    screencapMethod = 1;
+                    isSettingScreencapMethod = true;
+                    LogToolKit.println("成功设置截图方式一。");
+                }else{
+                    LogToolKit.println("警告：截图方式一失败。");
+                    LogToolKit.println("尝试使用方式二截图。");
+                    String imageName = "jumpgame_"+System.currentTimeMillis()+".png";
+                    args[2] = SCRIPT_SCREEN_CAP_METHOD2_1.replace("${adbpath}", adbPath).replace("${imagename}", imageName);
+                    Runtime.getRuntime().exec(args).waitFor();
+                    Thread.sleep(1000);
+                    args[2] = SCRIPT_SCREEN_CAP_METHOD2_2.replace("${adbpath}", adbPath).replace("${imagename}", imageName);
+                    Runtime.getRuntime().exec(args).waitFor();
+                    if(isImageOk()){
+                        screencapMethod = 2;
+                        isSettingScreencapMethod = true;
+                        LogToolKit.println("成功设置截图方式二。");
+                    }else{
+                        LogToolKit.println("警告：截图方式二失败。");
+                    }
+                }
+            }else{
+                if(screencapMethod==2){
+                    String imageName = "jumpgame_"+System.currentTimeMillis()+".png";
+                    args[2] = SCRIPT_SCREEN_CAP_METHOD2_1.replace("${adbpath}", adbPath).replace("${imagename}", imageName);
+                    Runtime.getRuntime().exec(args).waitFor();
+                    Thread.sleep(1000);
+                    args[2] = SCRIPT_SCREEN_CAP_METHOD2_2.replace("${adbpath}", adbPath).replace("${imagename}", imageName);
+                    Runtime.getRuntime().exec(args).waitFor();
+                }else{
+                    args[2] = SCRIPT_SCREEN_CAP_METHOD1.replace("${adbpath}", adbPath).replace("${imagename}", JumpService.getScreencapPath());
+                    Runtime.getRuntime().exec(args).waitFor();
+                }
+            }
+
         } catch (IOException e) {
             e.printStackTrace();
         } catch (InterruptedException e) {
@@ -165,7 +207,17 @@ public abstract class AdbToolKit {
         return stauts;
     }
 
-    public static boolean setting(){
+    private static boolean isImageOk() throws IOException {
+        BufferedImage image = ImageIO.read(new File(JumpService.getScreencapPath()));
+        if (image == null) {
+            return false;
+        }else{
+            return true;
+        }
+    }
+
+
+    public static boolean isADBToolOk(){
         String tempADBPath = PropertiesToolkit.getSettingADBPath();
         int checkR = AdbToolKit.checkAdbAndDevice(tempADBPath);
         if(checkR==1) {
@@ -181,14 +233,14 @@ public abstract class AdbToolKit {
             if(adbpathObject!=null){
                 tempADBPath = adbpathObject.toString();
                 PropertiesToolkit.setSettingADBPath(tempADBPath);
-                setting();
+                isADBToolOk();
                 return true;
             }else{
                 System.exit(0);
             }
         }else if(checkR == -2){
             JOptionPane.showMessageDialog(null, "未找接入的 Android 设备，请检测设备连接情况，确认后再点击确认！", "提示",JOptionPane.ERROR_MESSAGE);
-            setting();
+            isADBToolOk();
             return true;
         }
         PropertiesToolkit.setSettingADBPath(tempADBPath);
@@ -202,4 +254,9 @@ public abstract class AdbToolKit {
     public static void setAdbPath(String adbPath) {
         AdbToolKit.adbPath = adbPath;
     }
+
+    public static void main(String[] args) throws IOException {
+        System.out.println(isImageOk());;
+    }
+
 }

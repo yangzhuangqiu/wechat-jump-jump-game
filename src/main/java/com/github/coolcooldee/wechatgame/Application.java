@@ -9,6 +9,7 @@ package com.github.coolcooldee.wechatgame;
  */
 
 import com.github.coolcooldee.wechatgame.tools.LogToolKit;
+import com.github.coolcooldee.wechatgame.tools.PropertiesToolkit;
 import com.github.coolcooldee.wechatgame.ui.WechatGameUI;
 import com.github.coolcooldee.wechatgame.tools.AdbToolKit;
 
@@ -17,9 +18,10 @@ import com.github.coolcooldee.wechatgame.tools.AdbToolKit;
  */
 public class Application {
     public static void main(String[] args) {
-        LogToolKit.println("V1.0.11");
+        LogToolKit.println("V1.0.201801082200");
+        PropertiesToolkit.init();
         AdbToolKit.init();
-        new WechatGameUI().initGUI();
+        WechatGameUI.init();
     }
 
 }
