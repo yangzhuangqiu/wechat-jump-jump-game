@@ -111,6 +111,8 @@ public abstract class SettingToolkit {
         sb.append(PRO_UI_RATE).append(" : UI界面缩放比例，控制界面大小,，方便全屏显示。").append("\n");
         sb.append(PRO_JUMP_RATE).append(" : 跳跃系数，跳跃距离与手机屏幕的相对比值；跳跃距离偏大或者偏小是可以通过该值来校正。").append("\n");
         sb.append("\t以下为常见机型跳跃系数的参考值：").append("\n");
+
+        sb.append("\t一般机型 480*850 系数值为 ：3.100").append("\n");
         sb.append("\t一般机型 540*960 系数值为 ：2.732").append("\n");
         sb.append("\t一般机型 720*1280 系数值为 ：2.099").append("\n");
         sb.append("\t一般机型 720*1440 系数值为 ：2.099").append("\n");
