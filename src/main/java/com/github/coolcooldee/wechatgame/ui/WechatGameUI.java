@@ -80,7 +80,7 @@ public abstract class WechatGameUI {
                     LogToolKit.println("使用系统自适配的UI适配率："+SettingToolkit.getUiRate());
                 }else{
                     SettingToolkit.setDefaultTempUiRate();
-                    LogToolKit.println("目前系统没有该分辨率的UI适配率，使用固定默认值("+SettingToolkit.getUiRate()+")或者请手动配置 setting.properties 文件");
+                    LogToolKit.println("目前系统没有该分辨率的UI适配率，使用固定默认值("+SettingToolkit.getUiRate()+")或者请到【setting.properties】文件内手动配置【ui_rate】参数，参数值可以参考【README.TXT】");
                 }
             }else{
                 LogToolKit.println("使用设置文件中的UI适配率："+SettingToolkit.getUiRate());
@@ -94,7 +94,7 @@ public abstract class WechatGameUI {
                     LogToolKit.println("使用系统自适配的UI适配率："+SettingToolkit.getJumpRate());
                 }else{
                     SettingToolkit.setDefaultTempJumpRate();
-                    LogToolKit.println("目前系统没有该分辨率的跳跃系数，使用固定默认值("+SettingToolkit.getJumpRate()+")或者请手动配置 setting.properties 文件");
+                    LogToolKit.println("目前系统没有该分辨率的跳跃系数，使用固定默认值("+SettingToolkit.getJumpRate()+")或者请到【setting.properties】文件内手动配置【jump_rate】参数，参数值可以参考【README.TXT】");
                 }
             }else{
                 LogToolKit.println("使用设置文件中的跳跃系数："+SettingToolkit.getJumpRate());

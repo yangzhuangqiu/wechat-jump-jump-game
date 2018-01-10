@@ -30,7 +30,7 @@ public abstract class AdbToolKit {
 
     final static String SCRIPT_SCREEN_CAP_METHOD1 = "${adbpath} exec-out screencap -p > ${imagename}";
     final static String SCRIPT_SCREEN_CAP_METHOD2_1 = "${adbpath} shell screencap -p /sdcard/${imagename}";
-    final static String SCRIPT_SCREEN_CAP_METHOD2_2 = "${adbpath} pull /sdcard/${imagename} > ./${imagename}";
+    final static String SCRIPT_SCREEN_CAP_METHOD2_2 = "${adbpath} pull /sdcard/${imagename} > .";
     final static String SCRIPT_SCREEN_TOUCH = "${adbpath} shell input swipe ${x1} ${y1} ${x2} ${y2} ${time}";
     final static String SCRIPT_DEVICES = "${adbpath} devices";
     static boolean isSetting = false;
@@ -86,12 +86,11 @@ public abstract class AdbToolKit {
                 }else{
                     LogToolKit.println("警告：方式一获取屏幕信息失败。");
                     LogToolKit.println("尝试使用方式二获取屏幕信息。");
-                    String imageName = "jumpgame_"+System.currentTimeMillis()+".png";
-                    args[2] = SCRIPT_SCREEN_CAP_METHOD2_1.replace("${adbpath}", adbPath).replace("${imagename}", imageName);
-                    Runtime.getRuntime().exec(args).waitFor();
-                    Thread.sleep(1000);
-                    args[2] = SCRIPT_SCREEN_CAP_METHOD2_2.replace("${adbpath}", adbPath).replace("${imagename}", imageName);
-                    Runtime.getRuntime().exec(args).waitFor();
+                    String imageName = "jumpgame.png";
+                    String command = SCRIPT_SCREEN_CAP_METHOD2_1.replace("${adbpath}", adbPath).replace("${imagename}", imageName);
+                    Runtime.getRuntime().exec(command).waitFor();
+                    command = SCRIPT_SCREEN_CAP_METHOD2_2.replace("${adbpath}", adbPath).replace("${imagename}", imageName);
+                    Runtime.getRuntime().exec(command).waitFor();
                     if(isImageOk()){
                         screencapMethod = 2;
                         isSettingScreencapMethod = true;
@@ -102,12 +101,11 @@ public abstract class AdbToolKit {
                 }
             }else{
                 if(screencapMethod==2){
-                    String imageName = "jumpgame_"+System.currentTimeMillis()+".png";
-                    args[2] = SCRIPT_SCREEN_CAP_METHOD2_1.replace("${adbpath}", adbPath).replace("${imagename}", imageName);
-                    Runtime.getRuntime().exec(args).waitFor();
-                    Thread.sleep(1000);
-                    args[2] = SCRIPT_SCREEN_CAP_METHOD2_2.replace("${adbpath}", adbPath).replace("${imagename}", imageName);
-                    Runtime.getRuntime().exec(args).waitFor();
+                    String imageName = "jumpgame.png";
+                    String command = SCRIPT_SCREEN_CAP_METHOD2_1.replace("${adbpath}", adbPath).replace("${imagename}", imageName);
+                    Runtime.getRuntime().exec(command).waitFor();
+                    command = SCRIPT_SCREEN_CAP_METHOD2_2.replace("${adbpath}", adbPath).replace("${imagename}", imageName);
+                    Runtime.getRuntime().exec(command).waitFor();
                 }else{
                     args[2] = SCRIPT_SCREEN_CAP_METHOD1.replace("${adbpath}", adbPath).replace("${imagename}", JumpService.getScreencapPath());
                     Runtime.getRuntime().exec(args).waitFor();
