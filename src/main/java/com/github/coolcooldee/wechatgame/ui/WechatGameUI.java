@@ -1,8 +1,9 @@
 package com.github.coolcooldee.wechatgame.ui;
 
-import com.github.coolcooldee.wechatgame.service.JumpService;
+import com.github.coolcooldee.wechatgame.service.manual.JumpService;
 import com.github.coolcooldee.wechatgame.tools.AdbToolKit;
 import com.github.coolcooldee.wechatgame.tools.LogToolKit;
+import com.github.coolcooldee.wechatgame.tools.SettingToolkit;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -28,7 +29,6 @@ public abstract class WechatGameUI {
     static int fheight = 1000;
     static int width = 600; //default
     static int height = 1000; //default
-    static double uirate = 1;
     static int fx = 0;
     static int fy = 0;
 
@@ -73,18 +73,37 @@ public abstract class WechatGameUI {
                 resulotionStr.append(tempHeight).append("*").append(tempWidth);
             }
             LogToolKit.println("当前手机屏幕分辨率：" + resulotionStr);
-            Double distance2timeRatio = JumpService.getDistance2timeRatioByResolution(resulotionStr.toString());
-            if (distance2timeRatio != null) {
-                JumpService.setDistance2timeRatio(distance2timeRatio);
+            if(SettingToolkit.getUiRate()==null) {
+                Double tempUIRate = SettingToolkit.getDefaultUIRatioByResolution(resulotionStr.toString());
+                if (tempUIRate != null) {
+                    SettingToolkit.setUiRate(tempUIRate);
+                    LogToolKit.println("使用系统自适配的UI适配率："+SettingToolkit.getUiRate());
+                }else{
+                    SettingToolkit.setDefaultTempUiRate();
+                    LogToolKit.println("目前系统没有该分辨率的UI适配率，使用固定默认值("+SettingToolkit.getUiRate()+")或者请手动配置 setting.properties 文件");
+                }
+            }else{
+                LogToolKit.println("使用设置文件中的UI适配率："+SettingToolkit.getUiRate());
             }
-            Double tempUIRate = JumpService.getUIRatioByResolution(resulotionStr.toString());
-            if(tempUIRate!=null){
-                uirate = tempUIRate;
+            LogToolKit.println("设置窗体大小比率为："+ SettingToolkit.getUiRate());
+
+            if(SettingToolkit.getJumpRate()==null) {
+                Double jumpRate = SettingToolkit.getDefaultJumpRateByResolution(resulotionStr.toString());
+                if (jumpRate != null) {
+                    SettingToolkit.setJumpRate(jumpRate);
+                    LogToolKit.println("使用系统自适配的UI适配率："+SettingToolkit.getJumpRate());
+                }else{
+                    SettingToolkit.setDefaultTempJumpRate();
+                    LogToolKit.println("目前系统没有该分辨率的跳跃系数，使用固定默认值("+SettingToolkit.getJumpRate()+")或者请手动配置 setting.properties 文件");
+                }
+            }else{
+                LogToolKit.println("使用设置文件中的跳跃系数："+SettingToolkit.getJumpRate());
             }
-            fwidth = (int) (tempWidth * uirate);
-            fheight = (int) ((tempHeight+200) * uirate);
-            width = (int) (tempWidth * uirate);
-            height = (int) (tempHeight * uirate);
+            LogToolKit.println("设置跳跃系数为："+SettingToolkit.getJumpRate());
+            fwidth = (int) (tempWidth * SettingToolkit.getUiRate());
+            fheight = (int) ((tempHeight+200) * SettingToolkit.getUiRate());
+            width = (int) (tempWidth * SettingToolkit.getUiRate());
+            height = (int) (tempHeight * SettingToolkit.getUiRate());
         }else{
             LogToolKit.println("未找到截图，请确认ADB是否连接正常。");
         }

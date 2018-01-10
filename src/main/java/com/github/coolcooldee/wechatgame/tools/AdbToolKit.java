@@ -8,7 +8,7 @@ package com.github.coolcooldee.wechatgame.tools;
  * @Date 2018/1/3
  */
 
-import com.github.coolcooldee.wechatgame.service.JumpService;
+import com.github.coolcooldee.wechatgame.service.manual.JumpService;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -76,16 +76,16 @@ public abstract class AdbToolKit {
         String[] args = genBaseSysParams();
         try {
             if(!isSettingScreencapMethod){
-                LogToolKit.println("尝试使用方式一截图。");
+                LogToolKit.println("尝试使用方式一获取屏幕信息。");
                 args[2] = SCRIPT_SCREEN_CAP_METHOD1.replace("${adbpath}", adbPath).replace("${imagename}", JumpService.getScreencapPath());
                 Runtime.getRuntime().exec(args).waitFor();
                 if(isImageOk()){
                     screencapMethod = 1;
                     isSettingScreencapMethod = true;
-                    LogToolKit.println("成功设置截图方式一。");
+                    LogToolKit.println("成功设置方式一。");
                 }else{
-                    LogToolKit.println("警告：截图方式一失败。");
-                    LogToolKit.println("尝试使用方式二截图。");
+                    LogToolKit.println("警告：方式一获取屏幕信息失败。");
+                    LogToolKit.println("尝试使用方式二获取屏幕信息。");
                     String imageName = "jumpgame_"+System.currentTimeMillis()+".png";
                     args[2] = SCRIPT_SCREEN_CAP_METHOD2_1.replace("${adbpath}", adbPath).replace("${imagename}", imageName);
                     Runtime.getRuntime().exec(args).waitFor();
@@ -95,9 +95,9 @@ public abstract class AdbToolKit {
                     if(isImageOk()){
                         screencapMethod = 2;
                         isSettingScreencapMethod = true;
-                        LogToolKit.println("成功设置截图方式二。");
+                        LogToolKit.println("成功设置方式二。");
                     }else{
-                        LogToolKit.println("警告：截图方式二失败。");
+                        LogToolKit.println("警告：方式二获取屏幕信息失败。");
                     }
                 }
             }else{
@@ -218,7 +218,7 @@ public abstract class AdbToolKit {
 
 
     public static boolean isADBToolOk(){
-        String tempADBPath = PropertiesToolkit.getSettingADBPath();
+        String tempADBPath = SettingToolkit.getADBPath();
         int checkR = AdbToolKit.checkAdbAndDevice(tempADBPath);
         if(checkR==1) {
             setAdbPath(tempADBPath);
@@ -232,7 +232,7 @@ public abstract class AdbToolKit {
             Object adbpathObject = JOptionPane.showInputDialog(null,"请输入ADB工具地址：\n","系统参数设置",JOptionPane.PLAIN_MESSAGE,null,null,"例如：/Users/dee/Downloads/platform-tools/adb");
             if(adbpathObject!=null){
                 tempADBPath = adbpathObject.toString();
-                PropertiesToolkit.setSettingADBPath(tempADBPath);
+                SettingToolkit.setADBPath(tempADBPath);
                 isADBToolOk();
                 return true;
             }else{
@@ -243,17 +243,20 @@ public abstract class AdbToolKit {
             isADBToolOk();
             return true;
         }
-        PropertiesToolkit.setSettingADBPath(tempADBPath);
+        SettingToolkit.setADBPath(tempADBPath);
         setAdbPath(tempADBPath);
         LogToolKit.println("ADB工具地址设置成功：" + adbPath);
         return true;
     }
 
-
+    //获取手机屏幕大小 adb shell wm size
+    //查看机型 adb shell getprop ro.product.model
 
     public static void setAdbPath(String adbPath) {
         AdbToolKit.adbPath = adbPath;
     }
+
+
 
     public static void main(String[] args) throws IOException {
         System.out.println(isImageOk());;
